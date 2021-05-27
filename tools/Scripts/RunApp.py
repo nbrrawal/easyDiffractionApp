@@ -28,7 +28,7 @@ def runApp():
             #if 'test' in sys.argv[1:]:
             #    Functions.createDir(CONFIG.screenshots_dir)
             print('RUNNING {}'.format(str(appExePath())))
-            # Functions.run(appExePath(), *sys.argv[1:])
+            Functions.run(appExePath(), *sys.argv[1:])
     except Exception as exception:
         Functions.printFailMessage(message, exception)
         sys.exit()

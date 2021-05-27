@@ -35,10 +35,10 @@ EaElements.RemoteController {
 
         interval: 1000
         onTriggered: {
-            // startScreenRecording()
-            runDataFittingTutorial()
+            startScreenRecording()
+            //runDataFittingTutorial()
             //runDataSimulationTutorial()
-            //stopScreenRecording()
+            stopScreenRecording()
         }
     }
 
