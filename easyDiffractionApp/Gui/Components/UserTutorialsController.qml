@@ -35,7 +35,7 @@ EaElements.RemoteController {
 
         interval: 1000
         onTriggered: {
-            startScreenRecording()
+            // startScreenRecording()
             runDataFittingTutorial()
             //runDataSimulationTutorial()
             //stopScreenRecording()
@@ -344,41 +344,41 @@ EaElements.RemoteController {
 
         beforeRunTutorial()
 
-        // App preferences
-        if (was_user_guides_checked) {
-            rc.mouseClick(ExGlobals.Variables.preferencesButton)
-            rc.mouseClick(ExGlobals.Variables.enableUserGuidesCheckBox)
-            rc.mouseClick(ExGlobals.Variables.preferencesOkButton)
-        }
+        // // App preferences
+        // if (was_user_guides_checked) {
+        //     rc.mouseClick(ExGlobals.Variables.preferencesButton)
+        //     rc.mouseClick(ExGlobals.Variables.enableUserGuidesCheckBox)
+        //     rc.mouseClick(ExGlobals.Variables.preferencesOkButton)
+        // }
 
-        // Home Tab
-        rc.mouseClick(ExGlobals.Variables.startButton)
+        // // Home Tab
+        // rc.mouseClick(ExGlobals.Variables.startButton)
 
-        // Project Tab
-        rc.mouseClick(ExGlobals.Variables.loadExampleProjectButton)
-        rc.mouseClick(ExGlobals.Variables.sampleTabButton)
+        // // Project Tab
+        // rc.mouseClick(ExGlobals.Variables.loadExampleProjectButton)
+        // rc.mouseClick(ExGlobals.Variables.sampleTabButton)
 
-        // Sample page
-        rc.mouseClick(ExGlobals.Variables.experimentTabButton)
+        // // Sample page
+        // rc.mouseClick(ExGlobals.Variables.experimentTabButton)
 
-        // Experiment page
-        rc.mouseClick(ExGlobals.Variables.analysisTabButton)
+        // // Experiment page
+        // rc.mouseClick(ExGlobals.Variables.analysisTabButton)
 
-        // Analysis page
-        rc.mouseClick(ExGlobals.Variables.fitCellACheckBox)
-        rc.mouseClick(ExGlobals.Variables.parametersFilterTypeSelector)
-        rc.mouseClick(ExGlobals.Variables.parametersFilterTypeSelector, x_pos, y_pos)
-        rc.mouseClick(ExGlobals.Variables.fitZeroShiftCheckBox)
-        rc.mouseClick(ExGlobals.Variables.fitScaleCheckBox)
-        x_pos = typeof ExGlobals.Variables.fitResolutionYValue !== 'undefined' ?
-                    ExGlobals.Variables.fitResolutionYValue.width :
-                    0
-        rc.mouseClick(ExGlobals.Variables.fitResolutionYValue, x_pos)
-        rc.deleteCharacters(4)
-        rc.typeText("0961")
-        rc.keyClick(Qt.Key_Enter) // DOESN'T WORK ON CI XVFB ?
-        rc.wait(1000)
-        rc.mouseClick(ExGlobals.Variables.startFittingButton)
+        // // Analysis page
+        // rc.mouseClick(ExGlobals.Variables.fitCellACheckBox)
+        // rc.mouseClick(ExGlobals.Variables.parametersFilterTypeSelector)
+        // rc.mouseClick(ExGlobals.Variables.parametersFilterTypeSelector, x_pos, y_pos)
+        // rc.mouseClick(ExGlobals.Variables.fitZeroShiftCheckBox)
+        // rc.mouseClick(ExGlobals.Variables.fitScaleCheckBox)
+        // x_pos = typeof ExGlobals.Variables.fitResolutionYValue !== 'undefined' ?
+        //             ExGlobals.Variables.fitResolutionYValue.width :
+        //             0
+        // rc.mouseClick(ExGlobals.Variables.fitResolutionYValue, x_pos)
+        // rc.deleteCharacters(4)
+        // rc.typeText("0961")
+        // rc.keyClick(Qt.Key_Enter) // DOESN'T WORK ON CI XVFB ?
+        // rc.wait(1000)
+        // rc.mouseClick(ExGlobals.Variables.startFittingButton)
 
         isPreparationToFitDone = true
 
