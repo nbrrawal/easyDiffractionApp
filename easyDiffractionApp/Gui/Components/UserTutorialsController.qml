@@ -39,7 +39,7 @@ EaElements.RemoteController {
             //startScreenRecording()
             //runDataFittingTutorial()
             //runDataSimulationTutorial()
-            stopScreenRecording()
+            //stopScreenRecording()
         }
     }
 
