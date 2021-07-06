@@ -58,6 +58,9 @@ class PhaseProxy(QObject):
         self.logic.phasesAsCif(phases_as_cif)
         self.parent.parametersChanged.emit()
 
+    def sample(self):
+        return self.logic._sample
+
     def _setPhasesAsObj(self):
         start_time = timeit.default_timer()
         self.logic._setPhasesAsObj()

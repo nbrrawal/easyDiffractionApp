@@ -177,7 +177,7 @@ class ProjectLogic(QObject):
         self.phasesEnabled.emit()
         self.phasesAsObjChanged.emit()
         self.structureParametersChanged.emit()
-        self.parent.l_background._setAsXml()
+        self.parent.proxy.background._setAsXml()
 
         # experiment
         if 'experiments' in descr:
@@ -211,12 +211,14 @@ class ProjectLogic(QObject):
             new_engine = new_minimizer_settings['engine']
             new_method = new_minimizer_settings['method']
 
-            new_engine_index = self.parent.l_fitting.fitter.available_engines.index(new_engine)
-            self.parent.l_fitting.setCurrentMinimizerIndex(new_engine_index)
-            new_method_index = self.parent.l_fitting.minimizerMethodNames().index(new_method)
-            self.parent.l_fitting.currentMinimizerMethodIndex(new_method_index)
+            # new_engine_index = self.parent.l_fitting.fitter.available_engines.index(new_engine)
+            new_engine_index = self.parent.proxy.fitting.fitter.available_engines.index(new_engine)
+            # self.parent.l_fitting.setCurrentMinimizerIndex(new_engine_index)
+            self.parent.proxy.fitting.currentMinimizerIndex = new_engine_index
+            new_method_index = self.parent.proxy.fitting.minimizerMethodNames.index(new_method)
+            self.parent.proxy.fitting.currentMinimizerMethodIndex = new_method_index
 
-        self.parent.l_fitting.fitter.fit_object = self.parent.l_phase._sample
+        self.parent.proxy.fitting.fitter.fit_object = self.parent.l_phase._sample
         self.parent.l_stack.resetUndoRedoStack()
         self.parent.l_stack.undoRedoChanged.emit()
         self.setProjectCreated(True)
@@ -241,8 +243,8 @@ class ProjectLogic(QObject):
         descr['interface'] = self._interface.current_interface_name
 
         descr['minimizer'] = {
-            'engine': self.parent.l_fitting.fitter.current_engine.name,
-            'method': self.parent.l_fitting._current_minimizer_method_name
+            'engine': self.parent.proxy.fitting.fitter.current_engine.name,
+            'method': self.parent.proxy.fitting._current_minimizer_method_name
         }
         content_json = json.dumps(descr, indent=4, default=self.default)
         path = generalizePath(project_save_filepath)

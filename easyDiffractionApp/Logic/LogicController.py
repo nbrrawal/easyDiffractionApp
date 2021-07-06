@@ -37,10 +37,10 @@ class LogicController(QObject):
         self.l_parameters = ParametersLogic(self, interface=self.interface)
         self.l_experiment = ExperimentLogic(self)
         self.l_phase = PhaseLogic(self, interface=self.interface)
-        self.l_fitting = FittingLogic(self, interface=self.interface)
+        # self.l_fitting = FittingLogic(self, interface=self.interface)
         self.l_plotting1d = Plotting1dLogic(self)
         self.l_plotting3d = Plotting3dLogic(self)
-        self.l_background = BackgroundLogic(self)
+        # self.l_background = BackgroundLogic(self)
         self.l_project = ProjectLogic(self, interface=self.interface)
         # stack logic
         no_history = [self.parametersChanged]
@@ -50,12 +50,12 @@ class LogicController(QObject):
                                   callbacks_with_history=with_history)
 
     def setupSignals(self):
-        self.l_background.asObjChanged.connect(self.l_parameters.parametersChanged)
-        self.l_background.asObjChanged.connect(self.l_phase._sample.set_background)
-        self.l_background.asObjChanged.connect(self.l_parameters._updateCalculatedData)
+        # self.l_background.asObjChanged.connect(self.l_parameters.parametersChanged)
+        # self.l_background.asObjChanged.connect(self.l_phase._sample.set_background)
+        # self.l_background.asObjChanged.connect(self.l_parameters._updateCalculatedData)
 
-        self.l_fitting.fitFinished.connect(self.parametersChanged)
-        self.l_fitting.currentCalculatorChanged.connect(self.proxy.currentCalculatorChanged)
+        # self.l_fitting.fitFinished.connect(self.parametersChanged)
+        # # self.l_fitting.currentCalculatorChanged.connect(self.proxy.currentCalculatorChanged)
 
         self.l_project.reset.connect(self.resetState)
         self.l_project.phasesEnabled.connect(self.l_phase.phasesEnabled)
@@ -69,7 +69,8 @@ class LogicController(QObject):
         self.parametersChanged.connect(self.l_phase.structureParametersChanged)
         self.parametersChanged.connect(self.l_experiment._onPatternParametersChanged)
         self.parametersChanged.connect(self.l_parameters.instrumentParametersChanged)
-        self.parametersChanged.connect(self.l_background.onAsObjChanged)
+        # self.parametersChanged.connect(self.l_background.onAsObjChanged)
+        # self.parametersChanged.connect(self.proxy.background.onAsObjChanged)
         self.parametersChanged.connect(self.l_stack.undoRedoChanged)
 
         self.l_parameters.parametersValuesChanged.connect(self.parametersChanged)
@@ -102,15 +103,15 @@ class LogicController(QObject):
             self.l_phase.structureParametersChanged.emit()
             self.l_phase.phasesEnabled.emit()
 
-    def statusModelAsObj(self):
-        engine_name = self.l_fitting.fitter.current_engine.name
-        minimizer_name = self.l_fitting._current_minimizer_method_name
-        return self.l_state.statusModelAsObj(engine_name, minimizer_name)
+    # def statusModelAsObj(self):
+    #     engine_name = self.l_fitting.fitter.current_engine.name
+    #     minimizer_name = self.l_fitting._current_minimizer_method_name
+    #     return self.l_state.statusModelAsObj(engine_name, minimizer_name)
 
-    def statusModelAsXml(self):
-        engine_name = self.l_fitting.fitter.current_engine.name
-        minimizer_name = self.l_fitting._current_minimizer_method_name
-        return self.l_state.statusModelAsXml(engine_name, minimizer_name)
+    # def statusModelAsXml(self):
+    #     engine_name = self.l_fitting.fitter.current_engine.name
+    #     minimizer_name = self.l_fitting._current_minimizer_method_name
+    #     return self.l_state.statusModelAsXml(engine_name, minimizer_name)
 
     def recorder(self):
         rec = None

@@ -117,7 +117,7 @@ class ExperimentLogic(QObject):
             json.dumps(self._experiment_parameters)
 
         if len(self.parent.l_phase._sample.pattern.backgrounds) == 0:
-            self.parent.l_background.initializeContainer()
+            self.parent.proxy.background.initializeContainer()
 
         self.experimentDataChanged.emit()
         self.parent.l_project._project_info['experiments'] = \
