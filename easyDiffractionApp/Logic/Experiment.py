@@ -104,7 +104,7 @@ class ExperimentLogic(QObject):
 
     def _onExperimentDataAdded(self):
         print("***** _onExperimentDataAdded")
-        self.parent.l_plotting1d.setMeasuredData(
+        self.parent.proxy.plotting1d.setMeasuredData(
                                           self._experiment_data.x,
                                           self._experiment_data.y,
                                           self._experiment_data.e)
@@ -129,4 +129,4 @@ class ExperimentLogic(QObject):
         self.patternParametersAsObjChanged.emit()
 
     def onClearFrontendState(self):
-        self.parent.l_plotting1d.clearFrontendState()
+        self.parent.proxy.plotting1d.clearFrontendState()

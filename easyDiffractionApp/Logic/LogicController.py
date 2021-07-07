@@ -2,14 +2,8 @@ import json
 
 from PySide2.QtCore import QObject, Signal
 
-# from easyDiffractionApp.Logic.Background import BackgroundLogic
 from easyDiffractionApp.Logic.Experiment import ExperimentLogic
-# from easyDiffractionApp.Logic.Fitting import FittingLogic
-# from easyDiffractionApp.Logic.Parameters import ParametersLogic
 from easyDiffractionApp.Logic.Phase import PhaseLogic
-from easyDiffractionApp.Logic.Plotting1d import Plotting1dLogic
-from easyDiffractionApp.Logic.Plotting3d import Plotting3dLogic
-# from easyDiffractionApp.Logic.Project import ProjectLogic
 from easyDiffractionApp.Logic.Stack import StackLogic
 from easyDiffractionApp.Logic.State import StateLogic
 from easyDiffractionLib.interface import InterfaceFactory
@@ -36,8 +30,6 @@ class LogicController(QObject):
         self.l_state = StateLogic(self, interface=self.interface)
         self.l_experiment = ExperimentLogic(self)
         self.l_phase = PhaseLogic(self, interface=self.interface)
-        self.l_plotting1d = Plotting1dLogic(self)
-        self.l_plotting3d = Plotting3dLogic(self)
         # stack logic
         no_history = [self.proxy.parametersChanged]
         with_history = [self.l_phase.phaseAdded, self.parametersChanged]
@@ -59,18 +51,12 @@ class LogicController(QObject):
     def resetFactory(self):
         self.interface = InterfaceFactory()
 
-    def plotCalculatedData(self, data):
-        self.l_plotting1d.setCalculatedData(data[0], data[1])
-
-    def plotBraggData(self, data):
-        self.l_plotting1d.setBraggData(data[0], data[1], data[2], data[3])  # noqa: E501
-
     def initializeBorg(self):
         self.l_stack.initializeBorg()
 
     def resetState(self):
-        self.l_plotting1d.clearBackendState()
-        self.l_plotting1d.clearFrontendState()
+        self.proxy.plotting1d.clearBackendState()
+        self.proxy.plotting1d.clearFrontendState()
         self.l_stack.resetUndoRedoStack()
         self.l_stack.undoRedoChanged.emit()
 

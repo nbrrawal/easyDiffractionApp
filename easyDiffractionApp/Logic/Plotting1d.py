@@ -6,7 +6,7 @@ from PySide2.QtQml import QJSValue
 from PySide2.QtCharts import QtCharts
 
 
-class Plotting1dLogic(QObject):
+class Plotting1dLogic2(QObject):
     dummySignal = Signal()
 
     # Lib

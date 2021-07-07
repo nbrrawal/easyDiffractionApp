@@ -99,7 +99,7 @@ class BackgroundProxy(QObject):
     def updateChartBackground(self):
         if self._background_as_obj is None:
             return
-        self.parent.plotting1d.logic.setBackgroundData(
+        self.parent.plotting1d.setBackgroundData(
                             self._background_as_obj.x_sorted_points,
                             self._background_as_obj.y_sorted_points)
 

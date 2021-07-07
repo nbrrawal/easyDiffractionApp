@@ -34,10 +34,8 @@ class PyQmlProxy(QObject):
 
         ################## proxies #################
         interface = self.lc.interface
-        # self._fitting_proxy = FittingProxy(self, interface=interface)
-        # self._fitting_proxy = FittingProxy(self, self.lc)
-        self._plotting_1d_proxy = Plotting1dProxy(logic=self.lc)
-        self._plotting_3d_proxy = Plotting3dProxy(logic=self.lc)
+        self._plotting_1d_proxy = Plotting1dProxy()
+        self._plotting_3d_proxy = Plotting3dProxy()
         self._stack_proxy = StackProxy(self, logic=self.lc)
         self._parameters_proxy = ParametersProxy(self, interface=interface)
         self._project_proxy = ProjectProxy(self, interface=interface)
@@ -72,9 +70,11 @@ class PyQmlProxy(QObject):
         self._phase_proxy.logic.updateProjectInfo.connect(self._project_proxy.updateProjectInfo)
 
         self.parameters.parametersValuesChanged.connect(self.lc.parametersChanged)
-        self.parameters.plotCalculatedDataSignal.connect(self.lc.plotCalculatedData)
-        self.parameters.plotBraggDataSignal.connect(self.lc.plotBraggData)
         self.parameters.undoRedoChanged.connect(self._stack_proxy.logic.undoRedoChanged)
+        self.parameters.plotCalculatedDataSignal.connect(self.plotCalculatedData)
+        self.parameters.plotBraggDataSignal.connect(self.plotBraggData)
+        # self.parameters.plotCalculatedDataSignal.connect(self._plotting_1d_proxy.setCalculatedData)
+        # self.parameters.plotBraggDataSignal.connect(self._plotting_1d_proxy.setBraggData)
 
         self.parametersChanged.connect(self.lc.l_phase.structureParametersChanged)
         self.parametersChanged.connect(self.lc.l_experiment._onPatternParametersChanged)
@@ -136,6 +136,12 @@ class PyQmlProxy(QObject):
     @Property('QVariant', notify=dummySignal)
     def parameters(self):
         return self._parameters_proxy
+
+    def plotCalculatedData(self, data):
+        self.plotting1d.setCalculatedData(data[0], data[1])
+
+    def plotBraggData(self, data):
+        self.plotting1d.setBraggData(data[0], data[1], data[2], data[3])  # noqa: E501
 
     # status
     @Property('QVariant', notify=statusInfoChanged)

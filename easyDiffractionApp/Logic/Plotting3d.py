@@ -1,4 +1,4 @@
-class Plotting3dLogic():
+class Plotting3dLogic2():
     def __init__(self, parent):
 
         self.parent = parent
