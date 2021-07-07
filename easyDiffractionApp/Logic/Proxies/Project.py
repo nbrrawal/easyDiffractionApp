@@ -153,7 +153,7 @@ class ProjectProxy(QObject):
             experiments_e = self.parent.parameters._data.experiments[0].e
             descr['experiments'] = [experiments_x, experiments_y, experiments_e]
 
-        descr['experiment_skipped'] = self.parent.experiment.logic._experiment_skipped
+        descr['experiment_skipped'] = self.parent.experiment._experiment_skipped
         descr['project_info'] = self._project_info
 
         descr['interface'] = self._interface.current_interface_name
@@ -213,14 +213,14 @@ class ProjectProxy(QObject):
 
         # experiment
         if 'experiments' in descr:
-            self.parent.experiment.logic.experimentLoaded(True)
-            self.parent.experiment.logic.experimentSkipped(False)
+            self.parent.experiment.experimentLoaded = True
+            self.parent.experiment.experimentSkipped = False
             self.parent.parameters._data.experiments[0].x = np.array(descr['experiments'][0])
             self.parent.parameters._data.experiments[0].y = np.array(descr['experiments'][1])
             self.parent.parameters._data.experiments[0].e = np.array(descr['experiments'][2])
-            self.parent.experiment.logic._experiment_data = self.parent.parameters._data.experiments[0]
-            self.parent.experiment.logic.experiments = [{'name': descr['project_info']['experiments']}]
-            self.parent.experiment.logic.setCurrentExperimentDatasetName(descr['project_info']['experiments'])
+            self.parent.experiment._experiment_data = self.parent.parameters._data.experiments[0]
+            self.parent.experiment.experiments = [{'name': descr['project_info']['experiments']}]
+            self.parent.experiment.setCurrentExperimentDatasetName(descr['project_info']['experiments'])
 
             # send signal to tell the proxy we changed experiment
             self.experimentDataAdded.emit()
@@ -229,11 +229,11 @@ class ProjectProxy(QObject):
 
         else:
             # delete existing experiment
-            self.parent.experiment.logic.removeExperiment()
-            self.parent.experiment.logic.experimentLoaded(False)
+            self.parent.experiment.removeExperiment()
+            self.parent.experiment.experimentLoaded = False
             if descr['experiment_skipped']:
-                self.parent.experiment.logic.experimentSkipped(True)
-                self.parent.experiment.logic.experimentSkippedChanged.emit()
+                self.parent.experiment.experimentSkipped = True
+                self.parent.experiment.experimentSkippedChanged.emit()
 
         # project info
         self._project_info = descr['project_info']
@@ -283,7 +283,7 @@ class ProjectProxy(QObject):
         self.setProjectCreated(False)
         self.projectInfoChanged.emit()
         self.project_save_filepath = ""
-        self.parent.experiment.logic.removeExperiment()
+        self.parent.experiment.removeExperiment()
         if self.parent.phase.logic.samplesPresent():
             self.removePhaseSignal.emit(self.parent.phase.logic._sample.phases[self.parent.phase.logic._current_phase_index].name)
         self.reset.emit()

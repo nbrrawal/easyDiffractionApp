@@ -140,18 +140,18 @@ class ParametersProxy(QObject):
     # Calculated data
     ####################################################################################################################
     def _updateCalculatedData(self):
-        if not self.parent.experiment.logic._experiment_loaded and not self.parent.experiment.logic._experiment_skipped:
+        if not self.parent.experiment._experiment_loaded and not self.parent.experiment._experiment_skipped:
             return
         self.parent.phase.logic._sample.output_index = self.parent.phase.logic._current_phase_index
 
         #  THIS IS WHERE WE WOULD LOOK UP CURRENT EXP INDEX
         sim = self._data.simulations[0]
 
-        if self.parent.experiment.logic._experiment_loaded:
+        if self.parent.experiment._experiment_loaded:
             exp = self._data.experiments[0]
             sim.x = exp.x
 
-        elif self.parent.experiment.logic._experiment_skipped:
+        elif self.parent.experiment._experiment_skipped:
             x_min = float(self._simulation_parameters_as_obj['x_min'])
             x_max = float(self._simulation_parameters_as_obj['x_max'])
             x_step = float(self._simulation_parameters_as_obj['x_step'])
@@ -240,9 +240,9 @@ class ParametersProxy(QObject):
                 continue
 
             # add experimental dataset name
-            par_path = par_path.replace('Pars1D.', f'Instrument.{self.parent.experiment.logic.experimentDataAsObj()[0]["name"]}.')
-            par_path = par_path.replace('Pattern1D.', f'Instrument.{self.parent.experiment.logic.experimentDataAsObj()[0]["name"]}.')
-            # par_path = par_path.replace('Instrument.', f'Instrument.{self.parent.experiment.logic.experimentDataAsObj()[0]["name"]}.')
+            par_path = par_path.replace('Pars1D.', f'Instrument.{self.parent.experiment.experimentDataAsObj[0]["name"]}.')
+            par_path = par_path.replace('Pattern1D.', f'Instrument.{self.parent.experiment.experimentDataAsObj[0]["name"]}.')
+            # par_path = par_path.replace('Instrument.', f'Instrument.{self.parent.experiment.experimentDataAsObj()[0]["name"]}.')
 
             if self._parameters_filter_criteria.lower() not in par_path.lower():  # noqa: E501
                 continue

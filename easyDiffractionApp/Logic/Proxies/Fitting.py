@@ -270,3 +270,31 @@ class FittingProxy(QObject):
         constraint = self.fitter.fit_constraints()[index]
         constraint.enabled = bool(strtobool(enabled))
         self.constraintsChanged.emit()
+
+    ####################################################################################################################
+    ####################################################################################################################
+    # STATUS
+    ####################################################################################################################
+    ####################################################################################################################
+
+    def statusModelAsObj(self):
+        engine_name = self.fitter.current_engine.name
+        minimizer_name = self._current_minimizer_method_name
+        obj = {
+            "calculation":  self.interface.current_interface_name,
+            "minimization": f'{engine_name} ({minimizer_name})'  # noqa: E501
+        }
+        self._status_model = obj
+        return obj
+
+    def statusModelAsXml(self):
+        engine_name = self.fitter.current_engine.name
+        minimizer_name = self._current_minimizer_method_name
+        model = [
+            {"label": "Calculation", "value": self.interface.current_interface_name},  # noqa: E501
+            {"label": "Minimization",
+             "value": f'{engine_name} ({minimizer_name})'}  # noqa: E501
+        ]
+        xml = dicttoxml(model, attr_type=False)
+        xml = xml.decode()
+        return xml

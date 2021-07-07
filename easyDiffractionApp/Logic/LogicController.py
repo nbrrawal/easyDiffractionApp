@@ -2,10 +2,9 @@ import json
 
 from PySide2.QtCore import QObject, Signal
 
-from easyDiffractionApp.Logic.Experiment import ExperimentLogic
+# from easyDiffractionApp.Logic.Experiment import ExperimentLogic
 from easyDiffractionApp.Logic.Phase import PhaseLogic
 from easyDiffractionApp.Logic.Stack import StackLogic
-from easyDiffractionApp.Logic.State import StateLogic
 from easyDiffractionLib.interface import InterfaceFactory
 
 
@@ -27,8 +26,6 @@ class LogicController(QObject):
         self.setupSignals()
 
     def initializeLogics(self):
-        self.l_state = StateLogic(self, interface=self.interface)
-        self.l_experiment = ExperimentLogic(self)
         self.l_phase = PhaseLogic(self, interface=self.interface)
         # stack logic
         no_history = [self.proxy.parametersChanged]

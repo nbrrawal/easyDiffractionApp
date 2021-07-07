@@ -11,7 +11,7 @@ from easyCore import np
 from easyApp.Logic.Utils.Utils import generalizePath
 
 
-class ExperimentLogic(QObject):
+class ExperimentLogic2(QObject):
     """
     """
     experimentLoadedChanged = Signal()

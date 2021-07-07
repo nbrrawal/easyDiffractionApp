@@ -200,7 +200,7 @@ class ProjectLogic(QObject):
             self.parent.l_experiment.removeExperiment()
             self.parent.l_experiment.experimentLoaded(False)
             if descr['experiment_skipped']:
-                self.parent.l_experiment.experimentSkipped(True)
+                self.parent.l_experiment.experimentSkipped = True
                 self.parent.l_experiment.experimentSkippedChanged.emit()
 
         # project info

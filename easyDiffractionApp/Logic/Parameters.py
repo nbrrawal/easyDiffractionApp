@@ -235,7 +235,6 @@ class ParametersLogic2(QObject):
             # add experimental dataset name
             par_path = par_path.replace('Pars1D.', f'Instrument.{self.parent.l_experiment.experimentDataAsObj()[0]["name"]}.')
             par_path = par_path.replace('Pattern1D.', f'Instrument.{self.parent.l_experiment.experimentDataAsObj()[0]["name"]}.')
-            # par_path = par_path.replace('Instrument.', f'Instrument.{self.parent.l_experiment.experimentDataAsObj()[0]["name"]}.')
 
             if self._parameters_filter_criteria.lower() not in par_path.lower():  # noqa: E501
                 continue
