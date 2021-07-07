@@ -120,10 +120,10 @@ class ExperimentLogic(QObject):
             self.parent.proxy.background.initializeContainer()
 
         self.experimentDataChanged.emit()
-        self.parent.l_project._project_info['experiments'] = \
+        self.parent.proxy.project._project_info['experiments'] = \
             self.parent.l_parameters._data.experiments[0].name
 
-        self.parent.l_project.projectInfoChanged.emit()
+        self.parent.proxy.project.projectInfoChanged.emit()
 
     def _onPatternParametersChanged(self):
         self.state._setPatternParametersAsObj()

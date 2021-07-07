@@ -39,7 +39,7 @@ class PyQmlProxy(QObject):
         self._plotting_3d_proxy = Plotting3dProxy(logic=self.lc)
         self._stack_proxy = StackProxy(self, logic=self.lc)
         self._parameters_proxy = ParametersProxy(self, logic=self.lc)
-        self._project_proxy = ProjectProxy(self, logic=self.lc)
+        self._project_proxy = ProjectProxy(self, interface=interface)
         self._experiment_proxy = ExperimentProxy(self, logic=self.lc)
         self._phase_proxy = PhaseProxy(self, logic=self.lc)
         self._background_proxy = BackgroundProxy(self)
@@ -60,6 +60,15 @@ class PyQmlProxy(QObject):
         self._background_proxy.asObjChanged.connect(self.lc.l_parameters.parametersChanged)
         self._background_proxy.asObjChanged.connect(self.lc.l_phase._sample.set_background)
         self._background_proxy.asObjChanged.connect(self.lc.l_parameters._updateCalculatedData)
+
+        self._project_proxy.reset.connect(self.lc.resetState)
+        self._project_proxy.phasesEnabled.connect(self._phase_proxy.logic.phasesEnabled)
+        self._project_proxy.phasesAsObjChanged.connect(self._phase_proxy.logic.phasesAsObjChanged)
+        self._project_proxy.experimentDataAdded.connect(self._experiment_proxy.logic._onExperimentDataAdded)
+        self._project_proxy.structureParametersChanged.connect(self._phase_proxy.logic.structureParametersChanged)
+        self._project_proxy.removePhaseSignal.connect(self.lc.removePhase)
+        self._project_proxy.experimentLoadedChanged.connect(self._experiment_proxy.logic.experimentLoadedChanged)
+        self._phase_proxy.logic.updateProjectInfo.connect(self._project_proxy.updateProjectInfo)
 
         # start the undo/redo stack
         self.lc.initializeBorg()

@@ -2,14 +2,14 @@ import json
 
 from PySide2.QtCore import QObject, Signal
 
-from easyDiffractionApp.Logic.Background import BackgroundLogic
+# from easyDiffractionApp.Logic.Background import BackgroundLogic
 from easyDiffractionApp.Logic.Experiment import ExperimentLogic
-from easyDiffractionApp.Logic.Fitting import FittingLogic
+# from easyDiffractionApp.Logic.Fitting import FittingLogic
 from easyDiffractionApp.Logic.Parameters import ParametersLogic
 from easyDiffractionApp.Logic.Phase import PhaseLogic
 from easyDiffractionApp.Logic.Plotting1d import Plotting1dLogic
 from easyDiffractionApp.Logic.Plotting3d import Plotting3dLogic
-from easyDiffractionApp.Logic.Project import ProjectLogic
+# from easyDiffractionApp.Logic.Project import ProjectLogic
 from easyDiffractionApp.Logic.Stack import StackLogic
 from easyDiffractionApp.Logic.State import StateLogic
 from easyDiffractionLib.interface import InterfaceFactory
@@ -39,7 +39,6 @@ class LogicController(QObject):
         self.l_phase = PhaseLogic(self, interface=self.interface)
         self.l_plotting1d = Plotting1dLogic(self)
         self.l_plotting3d = Plotting3dLogic(self)
-        self.l_project = ProjectLogic(self, interface=self.interface)
         # stack logic
         no_history = [self.parametersChanged]
         with_history = [self.l_phase.phaseAdded, self.parametersChanged]
@@ -48,14 +47,6 @@ class LogicController(QObject):
                                   callbacks_with_history=with_history)
 
     def setupSignals(self):
-
-        self.l_project.reset.connect(self.resetState)
-        self.l_project.phasesEnabled.connect(self.l_phase.phasesEnabled)
-        self.l_project.phasesAsObjChanged.connect(self.l_phase.phasesAsObjChanged)
-        self.l_project.experimentDataAdded.connect(self.l_experiment._onExperimentDataAdded)
-        self.l_project.structureParametersChanged.connect(self.l_phase.structureParametersChanged)
-        self.l_project.removePhaseSignal.connect(self.removePhase)
-        self.l_project.experimentLoadedChanged.connect(self.l_experiment.experimentLoadedChanged)
 
         self.parametersChanged.connect(self.l_parameters._updateCalculatedData)
         self.parametersChanged.connect(self.l_phase.structureParametersChanged)
@@ -69,7 +60,7 @@ class LogicController(QObject):
         self.l_parameters.plotBraggDataSignal.connect(self.plotBraggData)
         self.l_parameters.undoRedoChanged.connect(self.l_stack.undoRedoChanged)
 
-        self.l_phase.updateProjectInfo.connect(self.l_project.updateProjectInfo)
+        # self.l_phase.updateProjectInfo.connect(self.proxy.project.updateProjectInfo)
 
     def resetFactory(self):
         self.interface = InterfaceFactory()
