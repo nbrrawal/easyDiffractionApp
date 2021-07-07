@@ -105,7 +105,7 @@ class FittingLogic(QObject):
 
     # def fit(self, data):
     def fit(self):
-        self.data = self.parent.l_parameters._data
+        self.data = self.parent.proxy.parameters._data
         if not self.fit_thread.is_alive():
             self.is_fitting_now = True
             self.fit_thread.start()
@@ -171,10 +171,10 @@ class FittingLogic(QObject):
         self.currentCalculatorChanged.emit()
         print("***** _onCurrentCalculatorChanged")
         self._onCurrentCalculatorChanged()
-        self.parent.l_parameters._updateCalculatedData()
+        self.parent.proxy.parameters._updateCalculatedData()
 
     def _onCurrentCalculatorChanged(self):
-        data = self.parent.l_parameters._data.simulations
+        data = self.parent.proxy.parameters._data.simulations
         data = data[0]
         data.name = f'{self.interface.current_interface_name} engine'
 

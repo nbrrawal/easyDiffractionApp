@@ -23,7 +23,6 @@ class ExperimentLogic(QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.parent = parent
-        self.state = parent.l_parameters
 
         self._experiment_parameters = None
         self._experiment_data_as_xml = ""
@@ -43,7 +42,7 @@ class ExperimentLogic(QObject):
     def _loadExperimentData(self, file_url):
         print("+ _loadExperimentData")
         file_path = generalizePath(file_url)
-        data = self.state._data.experiments[0]
+        data = self.parent.proxy._parameters_proxy._data.experiments[0]
         data.x, data.y, data.e = np.loadtxt(file_path, unpack=True)
         return data
 
@@ -77,15 +76,15 @@ class ExperimentLogic(QObject):
         self.experimentSkippedChanged.emit()
 
     def experimentDataAsObj(self):
-        return [{'name': experiment.name} for experiment in self.state._data.experiments]
+        return [{'name': experiment.name} for experiment in self.parent.proxy._parameters_proxy._data.experiments]
 
     def _setExperimentDataAsXml(self):
         self._experiment_data_as_xml = dicttoxml(self.experiments, attr_type=True).decode()  # noqa: E501
 
     def addExperimentDataFromXye(self, file_url):
         self._experiment_data = self._loadExperimentData(file_url)
-        self.state._data.experiments[0].name = pathlib.Path(file_url).stem
-        self.experiments = [{'name': experiment.name} for experiment in self.state._data.experiments]
+        self.parent.proxy._parameters_proxy._data.experiments[0].name = pathlib.Path(file_url).stem
+        self.experiments = [{'name': experiment.name} for experiment in self.parent.proxy._parameters_proxy._data.experiments]
         self.experimentLoaded(True)
         self.experimentSkipped(False)
 
@@ -95,10 +94,10 @@ class ExperimentLogic(QObject):
         self.experimentSkipped(False)
 
     def _onExperimentSkippedChanged(self):
-        self.state._updateCalculatedData()
+        self.parent.proxy._parameters_proxy._updateCalculatedData()
 
     def _onExperimentLoadedChanged(self):
-        self.state._onPatternParametersChanged()
+        self.parent.proxy._parameters_proxy._onPatternParametersChanged()
 
     def setCurrentExperimentDatasetName(self, name):
         self.parent.l_phase.setCurrentExperimentDatasetName(name)
@@ -121,12 +120,12 @@ class ExperimentLogic(QObject):
 
         self.experimentDataChanged.emit()
         self.parent.proxy.project._project_info['experiments'] = \
-            self.parent.l_parameters._data.experiments[0].name
+            self.parent.proxy.parameters._data.experiments[0].name
 
         self.parent.proxy.project.projectInfoChanged.emit()
 
     def _onPatternParametersChanged(self):
-        self.state._setPatternParametersAsObj()
+        self.parent.proxy._parameters_proxy._setPatternParametersAsObj()
         self.patternParametersAsObjChanged.emit()
 
     def onClearFrontendState(self):

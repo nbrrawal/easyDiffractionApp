@@ -61,7 +61,7 @@ class FittingProxy(QObject):
     def fit(self):
         # Currently using python threads from the `threading` module,
         # since QThreads don't seem to properly work under macos
-        self.data = self.parent.parameters.logic._data
+        self.data = self.parent.parameters._data
         if not self.fit_thread.is_alive():
             self.is_fitting_now = True
             self.fit_thread.start()
@@ -190,10 +190,10 @@ class FittingProxy(QObject):
         self.currentCalculatorChanged.emit()
         print("***** _onCurrentCalculatorChanged")
         self._onCurrentCalculatorChanged()
-        self.parent.parameters.logic._updateCalculatedData()
+        self.parent.parameters._updateCalculatedData()
 
     def _onCurrentCalculatorChanged(self):
-        data = self.parent.parameters.logic._data.simulations
+        data = self.parent.parameters._data.simulations
         data = data[0]
         data.name = f'{self.interface.current_interface_name} engine'
 

@@ -147,10 +147,10 @@ class ProjectProxy(QObject):
         descr = {
             'sample': self.parent.phase.logic._sample.as_dict(skip=['interface'])
         }
-        if self.parent.parameters.logic._data.experiments:
-            experiments_x = self.parent.parameters.logic._data.experiments[0].x
-            experiments_y = self.parent.parameters.logic._data.experiments[0].y
-            experiments_e = self.parent.parameters.logic._data.experiments[0].e
+        if self.parent.parameters._data.experiments:
+            experiments_x = self.parent.parameters._data.experiments[0].x
+            experiments_y = self.parent.parameters._data.experiments[0].y
+            experiments_e = self.parent.parameters._data.experiments[0].e
             descr['experiments'] = [experiments_x, experiments_y, experiments_e]
 
         descr['experiment_skipped'] = self.parent.experiment.logic._experiment_skipped
@@ -215,16 +215,16 @@ class ProjectProxy(QObject):
         if 'experiments' in descr:
             self.parent.experiment.logic.experimentLoaded(True)
             self.parent.experiment.logic.experimentSkipped(False)
-            self.parent.parameters.logic._data.experiments[0].x = np.array(descr['experiments'][0])
-            self.parent.parameters.logic._data.experiments[0].y = np.array(descr['experiments'][1])
-            self.parent.parameters.logic._data.experiments[0].e = np.array(descr['experiments'][2])
-            self.parent.experiment.logic._experiment_data = self.parent.parameters.logic._data.experiments[0]
+            self.parent.parameters._data.experiments[0].x = np.array(descr['experiments'][0])
+            self.parent.parameters._data.experiments[0].y = np.array(descr['experiments'][1])
+            self.parent.parameters._data.experiments[0].e = np.array(descr['experiments'][2])
+            self.parent.experiment.logic._experiment_data = self.parent.parameters._data.experiments[0]
             self.parent.experiment.logic.experiments = [{'name': descr['project_info']['experiments']}]
             self.parent.experiment.logic.setCurrentExperimentDatasetName(descr['project_info']['experiments'])
 
             # send signal to tell the proxy we changed experiment
             self.experimentDataAdded.emit()
-            self.parent.lc.parametersChanged.emit()
+            self.parent.parametersChanged.emit()
             self.experimentLoadedChanged.emit()
 
         else:

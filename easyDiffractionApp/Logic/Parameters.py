@@ -13,7 +13,7 @@ from easyCore.Utils.classTools import generatePath
 from easyDiffractionApp.Logic.DataStore import DataSet1D, DataStore
 
 
-class ParametersLogic(QObject):
+class ParametersLogic2(QObject):
     """
     """
     instrumentParametersChanged = Signal()
