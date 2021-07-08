@@ -145,7 +145,7 @@ class ProjectProxy(QObject):
         projectPath = self._currentProjectPath
         project_save_filepath = os.path.join(projectPath, 'project.json')
         descr = {
-            'sample': self.parent.phase.logic._sample.as_dict(skip=['interface'])
+            'sample': self.parent.phase._sample.as_dict(skip=['interface'])
         }
         if self.parent.parameters._data.experiments:
             experiments_x = self.parent.parameters._data.experiments[0].x
@@ -202,8 +202,8 @@ class ProjectProxy(QObject):
             if old_interface_name != interface_name:
                 self._interface.switch(interface_name)
 
-        self.parent.phase.logic._sample = Sample.from_dict(descr['sample'])
-        self.parent.phase.logic._sample.interface = self._interface
+        self.parent.phase._sample = Sample.from_dict(descr['sample'])
+        self.parent.phase._sample.interface = self._interface
 
         # send signal to tell the proxy we changed phases
         self.phasesEnabled.emit()
@@ -248,9 +248,9 @@ class ProjectProxy(QObject):
             new_method_index = self.parent.fitting.minimizerMethodNames.index(new_method)
             self.parent.fitting.currentMinimizerMethodIndex = new_method_index
 
-        self.parent.fitting.fitter.fit_object = self.parent.phase.logic._sample
-        self.parent.stack.logic.resetUndoRedoStack()
-        self.parent.stack.logic.undoRedoChanged.emit()
+        self.parent.fitting.fitter.fit_object = self.parent.phase._sample
+        self.parent.stack.resetUndoRedoStack()
+        self.parent.stack.undoRedoChanged.emit()
         self.setProjectCreated(True)
         self.stateChanged.emit(False)
 
@@ -284,9 +284,14 @@ class ProjectProxy(QObject):
         self.projectInfoChanged.emit()
         self.project_save_filepath = ""
         self.parent.experiment.removeExperiment()
-        if self.parent.phase.logic.samplesPresent():
-            self.removePhaseSignal.emit(self.parent.phase.logic._sample.phases[self.parent.phase.logic._current_phase_index].name)
-        self.reset.emit()
+        if self.parent.phase.samplesPresent:
+            self.removePhaseSignal.emit(self.parent.phase._sample.phases[self.parent.phase._current_phase_index].name)
+        # self.reset.emit()
+        self.parent.plotting1d.clearBackendState()
+        self.parent.plotting1d.clearFrontendState()
+        self.parent.stack.resetUndoRedoStack()
+        self.parent.stack.undoRedoChanged.emit()
+
         self.stateHasChanged = False
         self.stateChanged.emit(False)
 

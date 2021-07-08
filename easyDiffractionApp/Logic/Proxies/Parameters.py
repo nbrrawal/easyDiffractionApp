@@ -58,7 +58,7 @@ class ParametersProxy(QObject):
         self.parametersChanged.connect(self._onParametersChanged)
         # Analysis
         self.simulationParametersChanged.connect(self._onSimulationParametersChanged)
-        self.simulationParametersChanged.connect(self.parent._stack_proxy.undoRedoChanged)
+        # self.simulationParametersChanged.connect(self.parent._stack_proxy.undoRedoChanged)
 
     ####################################################################################################################
     ####################################################################################################################
@@ -133,7 +133,7 @@ class ParametersProxy(QObject):
         }
 
     def _setPatternParametersAsObj(self):
-        parameters = self.parent.lc.l_phase._sample.pattern.as_dict(skip=['interface'])
+        parameters = self.parent.phase._sample.pattern.as_dict(skip=['interface'])
         self._pattern_parameters_as_obj = parameters
 
     ####################################################################################################################
@@ -142,7 +142,7 @@ class ParametersProxy(QObject):
     def _updateCalculatedData(self):
         if not self.parent.experiment._experiment_loaded and not self.parent.experiment._experiment_skipped:
             return
-        self.parent.phase.logic._sample.output_index = self.parent.phase.logic._current_phase_index
+        self.parent.phase._sample.output_index = self.parent.phase._current_phase_index
 
         #  THIS IS WHERE WE WOULD LOOK UP CURRENT EXP INDEX
         sim = self._data.simulations[0]
@@ -195,7 +195,7 @@ class ParametersProxy(QObject):
 
     def _setInstrumentParametersAsObj(self):
         start_time = timeit.default_timer()
-        parameters = self.parent.phase.logic._sample.parameters.as_dict(skip=['interface'])
+        parameters = self.parent.phase._sample.parameters.as_dict(skip=['interface'])
         self._instrument_parameters_as_obj = parameters
         print("+ _setInstrumentParametersAsObj: {0:.3f} s".format(timeit.default_timer() - start_time))
         self.instrumentParametersAsObjChanged.emit()
@@ -229,7 +229,7 @@ class ParametersProxy(QObject):
 
         self._parameters_as_obj.clear()
 
-        par_ids, par_paths = generatePath(self.parent.phase.logic._sample, True)
+        par_ids, par_paths = generatePath(self.parent.phase._sample, True)
         par_index = 0
 
         for par_id, par_path in zip(par_ids, par_paths):

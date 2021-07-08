@@ -430,6 +430,12 @@ class Plotting1dProxy(QObject):
         }
         self.qtchartsBackgroundDataObjChanged.emit()
 
+    def plotCalculatedData(self, data):
+        self.setCalculatedData(data[0], data[1])
+
+    def plotBraggData(self, data):
+        self.setBraggData(data[0], data[1], data[2], data[3])  # noqa: E501
+
     # Private: range setters
 
     def _setMeasuredDataRanges(self):

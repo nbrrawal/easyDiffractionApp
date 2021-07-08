@@ -43,7 +43,7 @@ class ExperimentProxy(QObject):
 
     @Slot(str)
     def setCurrentExperimentDatasetName(self, name):
-        self.parent.phase.logic.setCurrentExperimentDatasetName(name)
+        self.parent.phase.setCurrentExperimentDatasetName(name)
         self.experimentDataChanged.emit()
         self.parent.project.projectInfoChanged.emit()
 
@@ -161,7 +161,7 @@ class ExperimentProxy(QObject):
         self.parent.parameters.simulationParametersAsObj = \
             json.dumps(self._experiment_parameters)
 
-        if len(self.parent.phase.logic._sample.pattern.backgrounds) == 0:
+        if len(self.parent.phase._sample.pattern.backgrounds) == 0:
             self.parent.background.initializeContainer()
 
         self.experimentDataChanged.emit()
